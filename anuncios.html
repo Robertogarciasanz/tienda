@@ -34,34 +34,16 @@
     a { color: inherit; text-decoration: none; }
 
     /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0 5vw; height: 64px;
-      background: rgba(0,31,84,0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201,168,76,0.25);
-    }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 0 5vw; height: 64px; background: rgba(0,31,84,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,0.25); }
     .nav-logo { font-family: var(--f-display); font-size: 1.4rem; font-weight: 600; color: #fff; letter-spacing: .04em; display: flex; align-items: center; gap: 8px; }
     .nav-logo span { color: var(--oro); }
-    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
     .nav-back { font-size: .85rem; font-weight: 500; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 6px; transition: color var(--trans); }
     .nav-back:hover { color: var(--oro); }
-    #btn-admin {
-      background: none; border: 1.5px solid rgba(255,255,255,.3);
-      color: rgba(255,255,255,.7); padding: 6px 14px; border-radius: 50px;
-      cursor: pointer; font-size: .82rem; font-weight: 500;
-      transition: all var(--trans); white-space: nowrap;
-    }
+    #btn-admin { background: none; border: 1.5px solid rgba(255,255,255,.3); color: rgba(255,255,255,.7); padding: 6px 14px; border-radius: 50px; cursor: pointer; font-size: .82rem; font-weight: 500; transition: all var(--trans); white-space: nowrap; }
     #btn-admin:hover { border-color: var(--oro); color: var(--oro); }
     #btn-admin.activo { border-color: var(--oro); color: var(--azul); background: var(--oro); }
-    #btn-exportar {
-      display: none;
-      background: var(--verde); color: white;
-      border: none; padding: 6px 14px; border-radius: 50px;
-      cursor: pointer; font-size: .82rem; font-weight: 600;
-      transition: all var(--trans); white-space: nowrap;
-    }
+    #btn-exportar { display: none; background: var(--verde); color: white; border: none; padding: 6px 14px; border-radius: 50px; cursor: pointer; font-size: .82rem; font-weight: 600; transition: background var(--trans); white-space: nowrap; }
     #btn-exportar:hover { background: #0da271; }
 
     /* CABECERA */
@@ -83,98 +65,49 @@
     #btn-limpiar { margin-right: 12px; padding: 6px 10px; background: none; border: none; cursor: pointer; color: var(--gris); font-size: 1.1rem; display: none; transition: color var(--trans); }
     #btn-limpiar:hover { color: var(--azul); }
 
-    /* MAIN */
     main { padding: 48px 5vw 80px; max-width: 1200px; margin: 0 auto; }
     .contador { font-size: .85rem; color: var(--gris); margin-bottom: 24px; }
     .contador strong { color: var(--azul); }
-
-    /* GRID */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
 
     /* CARD */
     .card { background: var(--blanco); border-radius: var(--radio); border: 1px solid rgba(0,31,84,.07); overflow: hidden; box-shadow: var(--sombra); transition: transform var(--trans), box-shadow var(--trans); display: flex; flex-direction: column; }
     .card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,31,84,.14); }
+    .modo-edicion .card { border-color: rgba(201,168,76,.35); }
 
-    /* ÁREA DE IMAGEN — CARRUSEL */
-    .img-area {
-      position: relative; width: 100%; height: 220px;
-      overflow: hidden; background: var(--gris-claro);
-      user-select: none;
-    }
-    .card-img {
-      width: 100%; height: 220px;
-      object-fit: cover; display: block;
-      position: absolute; top: 0; left: 0;
-    }
-    .card-img-placeholder {
-      width: 100%; height: 220px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 4rem;
-      background: linear-gradient(135deg, var(--gris-claro), #dde6f0);
-    }
+    /* CARRUSEL */
+    .img-area { position: relative; width: 100%; height: 220px; overflow: hidden; background: var(--gris-claro); }
+    .card-img { width: 100%; height: 220px; object-fit: cover; display: none; position: absolute; top: 0; left: 0; }
+    .card-img.activa { display: block; }
+    .card-img-placeholder { width: 100%; height: 220px; display: flex; align-items: center; justify-content: center; font-size: 4rem; background: linear-gradient(135deg, var(--gris-claro), #dde6f0); }
 
-    /* Overlay edición */
-    .img-overlay {
-      display: none; position: absolute; inset: 0;
-      background: rgba(0,31,84,.55); color: white;
-      font-size: .9rem; font-weight: 600;
-      align-items: center; justify-content: center; gap: 8px;
-      cursor: pointer; z-index: 4;
-    }
-    .modo-edicion .img-area { cursor: pointer; }
-    .modo-edicion .img-area:hover .img-overlay { display: flex; }
-
-    /* Flechas navegación */
-    .img-prev, .img-next {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(0,0,0,.45); color: white;
-      border: none; width: 34px; height: 34px; border-radius: 50%;
-      cursor: pointer; font-size: 1.3rem; font-weight: 700;
-      display: none; align-items: center; justify-content: center;
-      z-index: 5; transition: background var(--trans);
-    }
+    /* Controles carrusel */
+    .img-prev, .img-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,.45); color: white; border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; font-weight: 700; display: none; align-items: center; justify-content: center; z-index: 3; transition: background var(--trans); }
     .img-prev { left: 8px; }
     .img-next { right: 8px; }
     .img-prev:hover, .img-next:hover { background: rgba(0,0,0,.75); }
-    .img-area.multi .img-prev,
-    .img-area.multi .img-next { display: flex; }
-
-    /* Dots */
-    .img-dots {
-      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 6px; z-index: 5;
-    }
-    .img-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(255,255,255,.5); cursor: pointer;
-      transition: background var(--trans), transform var(--trans);
-    }
+    .img-area.multi .img-prev, .img-area.multi .img-next { display: flex; }
+    .img-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 3; }
+    .img-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.5); cursor: pointer; transition: background var(--trans), transform var(--trans); }
     .img-dot.active { background: white; transform: scale(1.25); }
 
-    /* Botón pegar imagen */
-    .btn-pegar {
-      position: absolute; bottom: 8px; left: 8px;
-      background: rgba(0,0,0,.6); color: white;
-      border: none; padding: 6px 12px; border-radius: 20px;
-      cursor: pointer; font-size: .78rem; font-weight: 600;
-      display: none; align-items: center; gap: 5px; z-index: 6;
+    /* Controles edición sobre imagen */
+    .img-edit-bar { position: absolute; bottom: 0; left: 0; right: 0; display: none; align-items: center; justify-content: center; gap: 8px; padding: 8px; background: rgba(0,31,84,.75); z-index: 4; }
+    .modo-edicion .img-edit-bar { display: flex; }
+    .img-edit-bar label, .img-edit-bar button {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: 20px; cursor: pointer;
+      font-size: .78rem; font-weight: 600; border: none;
+      transition: background var(--trans);
     }
-    .modo-edicion .btn-pegar { display: flex; }
+    .btn-add-foto { background: var(--oro); color: var(--azul); }
+    .btn-add-foto:hover { background: var(--oro-claro); }
+    .btn-pegar { background: rgba(255,255,255,.2); color: white; }
+    .btn-pegar:hover { background: rgba(255,255,255,.35); }
+    .btn-del-foto { background: rgba(220,38,38,.8); color: white; }
+    .btn-del-foto:hover { background: rgb(220,38,38); }
 
-    /* Botón eliminar foto */
-    .img-delete {
-      position: absolute; top: 8px; right: 8px;
-      background: rgba(220,38,38,.85); color: white;
-      border: none; width: 30px; height: 30px; border-radius: 50%;
-      cursor: pointer; font-size: .9rem;
-      display: none; align-items: center; justify-content: center;
-      z-index: 6; transition: background var(--trans);
-    }
-    .img-delete:hover { background: rgb(220,38,38); }
-    .modo-edicion .img-area .img-delete { display: flex; }
-
-    /* MODO EDICIÓN */
-    .modo-edicion .card { border-color: rgba(201,168,76,.35); }
+    /* MODO EDICIÓN — texto */
     [contenteditable="true"] { outline: 2px dashed var(--oro) !important; border-radius: 6px; padding: 3px 5px !important; min-height: 1.2em; cursor: text; }
     [contenteditable="true"]:focus { outline: 2px solid var(--oro) !important; }
     .btn-guardar-card { display: none; width: 100%; margin-top: 12px; padding: 10px; border-radius: 50px; background: var(--azul); color: white; border: none; cursor: pointer; font-size: .88rem; font-weight: 600; transition: background var(--trans); }
@@ -189,21 +122,18 @@
     .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
     .card-precio { font-size: 1.5rem; font-weight: 700; color: var(--azul); letter-spacing: -.01em; }
     .card-precio small { font-size: .8rem; font-weight: 400; color: var(--gris); margin-left: 2px; }
-
     .btn-whatsapp { display: inline-flex; align-items: center; gap: 7px; background: var(--whatsapp); color: #fff; padding: 10px 16px; border-radius: 50px; font-size: .85rem; font-weight: 600; border: none; cursor: pointer; text-decoration: none; transition: background var(--trans), transform var(--trans), box-shadow var(--trans); box-shadow: 0 3px 12px rgba(37,211,102,.35); white-space: nowrap; }
-    .btn-whatsapp:hover { background: #1ebe5b; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,.45); }
+    .btn-whatsapp:hover { background: #1ebe5b; transform: translateY(-2px); }
     .btn-whatsapp svg { flex-shrink: 0; }
     .btn-paypal { display: inline-flex; align-items: center; gap: 7px; background: var(--paypal); color: #fff; padding: 10px 16px; border-radius: 50px; font-size: .85rem; font-weight: 600; border: none; cursor: pointer; text-decoration: none; transition: background var(--trans), transform var(--trans), box-shadow var(--trans); box-shadow: 0 3px 12px rgba(0,112,186,.30); white-space: nowrap; }
-    .btn-paypal:hover { background: #005ea6; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,112,186,.40); }
+    .btn-paypal:hover { background: #005ea6; transform: translateY(-2px); }
     .card-acciones { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
 
-    /* SIN RESULTADOS */
     .sin-resultados { display: none; grid-column: 1 / -1; text-align: center; padding: 64px 24px; color: var(--gris); }
     .sin-resultados .emoji { font-size: 3rem; margin-bottom: 12px; }
     .sin-resultados h3 { font-family: var(--f-display); font-size: 1.5rem; color: var(--azul); margin-bottom: 8px; }
     .sin-resultados.visible { display: block; }
 
-    /* FOOTER */
     footer { background: #080d1a; padding: 28px 5vw; text-align: center; color: rgba(255,255,255,.4); font-size: .82rem; }
     footer span { color: var(--oro); }
 
@@ -212,12 +142,11 @@
       .card-footer { flex-direction: column; align-items: flex-start; }
       .card-acciones { width: 100%; }
       .btn-whatsapp, .btn-paypal { flex: 1; justify-content: center; }
+      .img-edit-bar { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
-
-<input type="file" id="file-input" accept="image/*" style="display:none">
 
 <nav>
   <div class="nav-logo">🏰 Casa <span>Tudela</span></div>
@@ -246,16 +175,19 @@
   <div class="contador" id="contador"></div>
   <div class="grid" id="grid">
 
-    <!-- ═══════════════ EXCAVADORA ═══════════════ -->
+    <!-- ═══ EXCAVADORA ═══ -->
     <article class="card" data-id="excavadora" data-nombre="excavadora yanmar b27 maquinaria construccion">
-      <div class="img-area" data-index="0" onclick="clickImagen(this)">
+      <div class="img-area" data-index="0">
         <div class="card-img-placeholder">🚜</div>
-        <div class="img-overlay">📷 Añadir foto</div>
-        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
-        <button class="img-delete" onclick="deleteImg(event,this)" title="Eliminar foto">✕</button>
+        <div class="img-edit-bar">
+          <label class="btn-add-foto" for="file-excavadora">📷 Añadir foto</label>
+          <input type="file" id="file-excavadora" accept="image/*" style="display:none" onchange="handleUpload(this,'excavadora')">
+          <button class="btn-pegar" onclick="pegarClipboard(event,'excavadora')">📋 Pegar</button>
+          <button class="btn-del-foto" onclick="deleteImg(event,'excavadora')">🗑 Quitar</button>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-cat">Maquinaria de construcción</div>
@@ -265,30 +197,31 @@
           <div class="card-precio"><span style="text-decoration:line-through;font-size:1rem;color:var(--gris);font-weight:400;">10.000€</span><br>9.500€</div>
         </div>
         <div class="card-acciones">
-          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20la%20Excavadora%20Yanmar%20B27%20(ref.%20584383899).%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>
-            WhatsApp
+          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20la%20Excavadora%20Yanmar%20B27.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>WhatsApp
           </a>
           <a class="btn-paypal" href="https://www.paypal.com/ncp/payment/T3HG588SPKYX4" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>
-            PayPal
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>PayPal
           </a>
-          <a href="https://www.milanuncios.com/maquinaria-de-construccion/vendo-ecavadora-yanmar-b27-584383899.htm" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:50px;background:var(--gris-claro);color:var(--azul);font-size:.85rem;font-weight:600;border:1.5px solid rgba(0,31,84,.12);transition:background var(--trans);" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='var(--gris-claro)'">Ver en Milanuncios</a>
+          <a href="https://www.milanuncios.com/maquinaria-de-construccion/vendo-ecavadora-yanmar-b27-584383899.htm" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:50px;background:var(--gris-claro);color:var(--azul);font-size:.85rem;font-weight:600;border:1.5px solid rgba(0,31,84,.12);">Ver en Milanuncios</a>
         </div>
-        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar texto</button>
       </div>
     </article>
 
-    <!-- ═══════════════ NOKIA 7110 ═══════════════ -->
+    <!-- ═══ NOKIA 7110 ═══ -->
     <article class="card" data-id="nokia" data-nombre="nokia 7110 movil telefono coleccion matrix">
-      <div class="img-area" data-index="0" onclick="clickImagen(this)">
+      <div class="img-area" data-index="0">
         <div class="card-img-placeholder">📱</div>
-        <div class="img-overlay">📷 Añadir foto</div>
-        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
-        <button class="img-delete" onclick="deleteImg(event,this)" title="Eliminar foto">✕</button>
+        <div class="img-edit-bar">
+          <label class="btn-add-foto" for="file-nokia">📷 Añadir foto</label>
+          <input type="file" id="file-nokia" accept="image/*" style="display:none" onchange="handleUpload(this,'nokia')">
+          <button class="btn-pegar" onclick="pegarClipboard(event,'nokia')">📋 Pegar</button>
+          <button class="btn-del-foto" onclick="deleteImg(event,'nokia')">🗑 Quitar</button>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-cat">Telefonía · Colección</div>
@@ -298,29 +231,30 @@
           <div class="card-precio">A convenir</div>
         </div>
         <div class="card-acciones">
-          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20el%20Nokia%207110%20que%20anuncias%20en%20Casa%20Tudela.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>
-            WhatsApp
+          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20el%20Nokia%207110.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>WhatsApp
           </a>
           <a class="btn-paypal" href="https://www.paypal.com/ncp/payment/T3HG588SPKYX4" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>
-            PayPal
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>PayPal
           </a>
         </div>
-        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar texto</button>
       </div>
     </article>
 
-    <!-- ═══════════════ BICICLETA ═══════════════ -->
+    <!-- ═══ BICICLETA ═══ -->
     <article class="card" data-id="bicicleta" data-nombre="bicicleta montaña">
-      <div class="img-area" data-index="0" onclick="clickImagen(this)">
+      <div class="img-area" data-index="0">
         <div class="card-img-placeholder">🚲</div>
-        <div class="img-overlay">📷 Añadir foto</div>
-        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
-        <button class="img-delete" onclick="deleteImg(event,this)" title="Eliminar foto">✕</button>
+        <div class="img-edit-bar">
+          <label class="btn-add-foto" for="file-bicicleta">📷 Añadir foto</label>
+          <input type="file" id="file-bicicleta" accept="image/*" style="display:none" onchange="handleUpload(this,'bicicleta')">
+          <button class="btn-pegar" onclick="pegarClipboard(event,'bicicleta')">📋 Pegar</button>
+          <button class="btn-del-foto" onclick="deleteImg(event,'bicicleta')">🗑 Quitar</button>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-cat">Deportes</div>
@@ -330,29 +264,30 @@
           <div class="card-precio">120€ <small>negociable</small></div>
         </div>
         <div class="card-acciones">
-          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20la%20Bicicleta%20de%20monta%C3%B1a%20que%20anuncias%20en%20Casa%20Tudela.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>
-            WhatsApp
+          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20la%20Bicicleta%20de%20monta%C3%B1a.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>WhatsApp
           </a>
           <a class="btn-paypal" href="https://www.paypal.com/ncp/payment/T3HG588SPKYX4" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>
-            PayPal
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>PayPal
           </a>
         </div>
-        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar texto</button>
       </div>
     </article>
 
-    <!-- ═══════════════ LÁMPARA ═══════════════ -->
+    <!-- ═══ LÁMPARA ═══ -->
     <article class="card" data-id="lampara" data-nombre="lámpara pie salón">
-      <div class="img-area" data-index="0" onclick="clickImagen(this)">
+      <div class="img-area" data-index="0">
         <div class="card-img-placeholder">🪔</div>
-        <div class="img-overlay">📷 Añadir foto</div>
-        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
-        <button class="img-delete" onclick="deleteImg(event,this)" title="Eliminar foto">✕</button>
+        <div class="img-edit-bar">
+          <label class="btn-add-foto" for="file-lampara">📷 Añadir foto</label>
+          <input type="file" id="file-lampara" accept="image/*" style="display:none" onchange="handleUpload(this,'lampara')">
+          <button class="btn-pegar" onclick="pegarClipboard(event,'lampara')">📋 Pegar</button>
+          <button class="btn-del-foto" onclick="deleteImg(event,'lampara')">🗑 Quitar</button>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-cat">Hogar · Decoración</div>
@@ -362,29 +297,30 @@
           <div class="card-precio">35€</div>
         </div>
         <div class="card-acciones">
-          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20la%20L%C3%A1mpara%20de%20pie%20que%20anuncias%20en%20Casa%20Tudela.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>
-            WhatsApp
+          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20la%20L%C3%A1mpara%20de%20pie.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>WhatsApp
           </a>
           <a class="btn-paypal" href="https://www.paypal.com/ncp/payment/T3HG588SPKYX4" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>
-            PayPal
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>PayPal
           </a>
         </div>
-        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar texto</button>
       </div>
     </article>
 
-    <!-- ═══════════════ NOVELAS ═══════════════ -->
+    <!-- ═══ NOVELAS ═══ -->
     <article class="card" data-id="novelas" data-nombre="libro novela ficción">
-      <div class="img-area" data-index="0" onclick="clickImagen(this)">
+      <div class="img-area" data-index="0">
         <div class="card-img-placeholder">📚</div>
-        <div class="img-overlay">📷 Añadir foto</div>
-        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
-        <button class="img-delete" onclick="deleteImg(event,this)" title="Eliminar foto">✕</button>
+        <div class="img-edit-bar">
+          <label class="btn-add-foto" for="file-novelas">📷 Añadir foto</label>
+          <input type="file" id="file-novelas" accept="image/*" style="display:none" onchange="handleUpload(this,'novelas')">
+          <button class="btn-pegar" onclick="pegarClipboard(event,'novelas')">📋 Pegar</button>
+          <button class="btn-del-foto" onclick="deleteImg(event,'novelas')">🗑 Quitar</button>
+        </div>
       </div>
       <div class="card-body">
         <div class="card-cat">Libros</div>
@@ -394,16 +330,14 @@
           <div class="card-precio">10€ <small>el lote</small></div>
         </div>
         <div class="card-acciones">
-          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20el%20Lote%20de%20novelas%20que%20anuncias%20en%20Casa%20Tudela.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>
-            WhatsApp
+          <a class="btn-whatsapp" href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20el%20Lote%20de%20novelas.%20%C2%BFSigue%20disponible%3F" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>WhatsApp
           </a>
           <a class="btn-paypal" href="https://www.paypal.com/ncp/payment/T3HG588SPKYX4" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>
-            PayPal
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>PayPal
           </a>
         </div>
-        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar texto</button>
       </div>
     </article>
 
@@ -419,74 +353,80 @@
 
 <script>
   const cards = document.querySelectorAll('.card');
-  const btnLimpiar = document.getElementById('btn-limpiar');
-  const sinResultados = document.getElementById('sin-resultados');
-  const contador = document.getElementById('contador');
   const STORAGE_KEY = 'ct_anuncios_v1';
   let modoEdicion = false;
-  let cardEditandoImagen = null;
 
-  // ── BUSCADOR ─────────────────────────────────────────
-  function actualizarContador(visibles) {
-    contador.innerHTML = visibles === cards.length
+  // ── BUSCADOR ────────────────────────────────────────
+  function actualizarContador(n) {
+    document.getElementById('contador').innerHTML = n === cards.length
       ? `<strong>${cards.length}</strong> artículos disponibles`
-      : `<strong>${visibles}</strong> de <strong>${cards.length}</strong> artículos`;
+      : `<strong>${n}</strong> de <strong>${cards.length}</strong> artículos`;
   }
   function filtrar(q) {
     q = q.trim().toLowerCase();
-    btnLimpiar.style.display = q ? 'block' : 'none';
-    let visibles = 0;
-    cards.forEach(card => {
-      const texto = (card.dataset.nombre + ' ' + card.querySelector('.card-title').textContent + ' ' + card.querySelector('.card-desc').textContent).toLowerCase();
-      const ok = !q || texto.includes(q);
-      card.style.display = ok ? '' : 'none';
-      if (ok) visibles++;
+    document.getElementById('btn-limpiar').style.display = q ? 'block' : 'none';
+    let v = 0;
+    cards.forEach(c => {
+      const t = (c.dataset.nombre + ' ' + c.querySelector('.card-title').textContent + ' ' + c.querySelector('.card-desc').textContent).toLowerCase();
+      const ok = !q || t.includes(q);
+      c.style.display = ok ? '' : 'none';
+      if (ok) v++;
     });
-    sinResultados.classList.toggle('visible', visibles === 0);
-    if (visibles === 0) document.getElementById('termino-buscado').textContent = q;
-    actualizarContador(visibles);
+    document.getElementById('sin-resultados').classList.toggle('visible', v === 0);
+    if (v === 0) document.getElementById('termino-buscado').textContent = q;
+    actualizarContador(v);
   }
   function limpiar() {
-    const input = document.getElementById('buscador');
-    input.value = ''; input.focus(); filtrar('');
+    const i = document.getElementById('buscador');
+    i.value = ''; i.focus(); filtrar('');
   }
 
-  // ── CARRUSEL ─────────────────────────────────────────
+  // ── CARRUSEL ────────────────────────────────────────
+  function getImagenes(id) {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    return (d[id] && d[id].imagenes) ? d[id].imagenes : [];
+  }
+  function setImagenes(id, arr) {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (!d[id]) d[id] = {};
+    d[id].imagenes = arr;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+  }
+
   function renderCarousel(card) {
     const id = card.dataset.id;
-    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    const imagenes = datos[id] && datos[id].imagenes ? datos[id].imagenes : [];
-    const imgArea = card.querySelector('.img-area');
-    let idx = parseInt(imgArea.dataset.index) || 0;
+    const imagenes = getImagenes(id);
+    const area = card.querySelector('.img-area');
+    let idx = parseInt(area.dataset.index) || 0;
     if (idx >= imagenes.length) idx = Math.max(0, imagenes.length - 1);
-    imgArea.dataset.index = idx;
+    area.dataset.index = idx;
 
-    // Limpiar imágenes actuales
-    imgArea.querySelectorAll('.card-img').forEach(el => el.remove());
-    const placeholder = imgArea.querySelector('.card-img-placeholder');
+    // Quitar imágenes anteriores del DOM
+    area.querySelectorAll('.card-img').forEach(el => el.remove());
+    const placeholder = area.querySelector('.card-img-placeholder');
 
     if (imagenes.length > 0) {
       if (placeholder) placeholder.style.display = 'none';
-      const img = document.createElement('img');
-      img.className = 'card-img';
-      img.src = imagenes[idx];
-      img.alt = card.querySelector('.card-title').textContent;
-      imgArea.insertBefore(img, imgArea.querySelector('.img-overlay'));
+      imagenes.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.className = 'card-img' + (i === idx ? ' activa' : '');
+        img.src = src;
+        img.alt = card.querySelector('.card-title').textContent;
+        area.insertBefore(img, area.querySelector('.img-prev'));
+      });
     } else {
       if (placeholder) placeholder.style.display = '';
     }
 
-    // Clase multi para mostrar flechas
-    imgArea.classList.toggle('multi', imagenes.length > 1);
+    area.classList.toggle('multi', imagenes.length > 1);
 
-    // Dots
-    const dotsEl = imgArea.querySelector('.img-dots');
+    const dotsEl = area.querySelector('.img-dots');
     dotsEl.innerHTML = '';
     if (imagenes.length > 1) {
       imagenes.forEach((_, i) => {
         const dot = document.createElement('span');
         dot.className = 'img-dot' + (i === idx ? ' active' : '');
-        dot.onclick = e => { e.stopPropagation(); imgArea.dataset.index = i; renderCarousel(card); };
+        dot.onclick = e => { e.stopPropagation(); area.dataset.index = i; renderCarousel(card); };
         dotsEl.appendChild(dot);
       });
     }
@@ -495,46 +435,85 @@
   function prevImg(e, btn) {
     e.stopPropagation();
     const card = btn.closest('.card');
-    const imgArea = btn.closest('.img-area');
-    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    const imagenes = (datos[card.dataset.id] && datos[card.dataset.id].imagenes) || [];
-    if (imagenes.length < 2) return;
-    let idx = parseInt(imgArea.dataset.index) || 0;
-    imgArea.dataset.index = (idx - 1 + imagenes.length) % imagenes.length;
+    const area = btn.closest('.img-area');
+    const imgs = getImagenes(card.dataset.id);
+    if (imgs.length < 2) return;
+    let idx = parseInt(area.dataset.index) || 0;
+    area.dataset.index = (idx - 1 + imgs.length) % imgs.length;
     renderCarousel(card);
   }
-
   function nextImg(e, btn) {
     e.stopPropagation();
     const card = btn.closest('.card');
-    const imgArea = btn.closest('.img-area');
-    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    const imagenes = (datos[card.dataset.id] && datos[card.dataset.id].imagenes) || [];
-    if (imagenes.length < 2) return;
-    let idx = parseInt(imgArea.dataset.index) || 0;
-    imgArea.dataset.index = (idx + 1) % imagenes.length;
+    const area = btn.closest('.img-area');
+    const imgs = getImagenes(card.dataset.id);
+    if (imgs.length < 2) return;
+    let idx = parseInt(area.dataset.index) || 0;
+    area.dataset.index = (idx + 1) % imgs.length;
     renderCarousel(card);
   }
-
-  function deleteImg(e, btn) {
+  function deleteImg(e, id) {
     e.stopPropagation();
-    const card = btn.closest('.card');
-    const imgArea = card.querySelector('.img-area');
-    const id = card.dataset.id;
-    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    if (!datos[id] || !datos[id].imagenes || datos[id].imagenes.length === 0) return;
-    let idx = parseInt(imgArea.dataset.index) || 0;
-    datos[id].imagenes.splice(idx, 1);
-    imgArea.dataset.index = Math.max(0, Math.min(idx, datos[id].imagenes.length - 1));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+    const card = document.querySelector(`.card[data-id="${id}"]`);
+    const area = card.querySelector('.img-area');
+    const imgs = getImagenes(id);
+    if (imgs.length === 0) return;
+    let idx = parseInt(area.dataset.index) || 0;
+    imgs.splice(idx, 1);
+    setImagenes(id, imgs);
+    area.dataset.index = Math.max(0, Math.min(idx, imgs.length - 1));
     renderCarousel(card);
   }
 
-  // ── MODO EDICIÓN ─────────────────────────────────────
+  // ── SUBIR IMAGEN ────────────────────────────────────
+  function handleUpload(input, id) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const imgs = getImagenes(id);
+      imgs.push(ev.target.result);
+      setImagenes(id, imgs);
+      const card = document.querySelector(`.card[data-id="${id}"]`);
+      card.querySelector('.img-area').dataset.index = imgs.length - 1;
+      renderCarousel(card);
+    };
+    reader.readAsDataURL(file);
+    input.value = '';
+  }
+
+  // ── PEGAR DESDE PORTAPAPELES ─────────────────────────
+  async function pegarClipboard(e, id) {
+    e.stopPropagation();
+    try {
+      const items = await navigator.clipboard.read();
+      for (const item of items) {
+        const t = item.types.find(x => x.startsWith('image/'));
+        if (t) {
+          const blob = await item.getType(t);
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            const imgs = getImagenes(id);
+            imgs.push(ev.target.result);
+            setImagenes(id, imgs);
+            const card = document.querySelector(`.card[data-id="${id}"]`);
+            card.querySelector('.img-area').dataset.index = imgs.length - 1;
+            renderCarousel(card);
+          };
+          reader.readAsDataURL(blob);
+          return;
+        }
+      }
+      alert('No hay imagen copiada en el portapapeles.');
+    } catch {
+      alert('Permiso denegado. Usa "📷 Añadir foto" para subir desde la galería.');
+    }
+  }
+
+  // ── MODO EDICIÓN ────────────────────────────────────
   function toggleAdmin() {
     if (!modoEdicion) {
-      const clave = prompt('Contraseña:');
-      if (clave !== '8117') return;
+      if (prompt('Contraseña:') !== '8117') return;
     }
     modoEdicion = !modoEdicion;
     document.body.classList.toggle('modo-edicion', modoEdicion);
@@ -549,39 +528,30 @@
     });
   }
 
-  // Pegar imagen desde portapapeles (API moderna)
-  async function pegarImagenClipboard(e, card) {
-    e.stopPropagation();
-    try {
-      const items = await navigator.clipboard.read();
-      for (const item of items) {
-        const imageType = item.types.find(t => t.startsWith('image/'));
-        if (imageType) {
-          const blob = await item.getType(imageType);
-          const reader = new FileReader();
-          reader.onload = function(ev) {
-            const id = card.dataset.id;
-            const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-            if (!datos[id]) datos[id] = {};
-            if (!datos[id].imagenes) datos[id].imagenes = [];
-            datos[id].imagenes.push(ev.target.result);
-            const imgArea = card.querySelector('.img-area');
-            imgArea.dataset.index = datos[id].imagenes.length - 1;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
-            renderCarousel(card);
-          };
-          reader.readAsDataURL(blob);
-          return;
-        }
-      }
-      alert('No hay imagen copiada. Copia primero la imagen de Keep.');
-    } catch {
-      alert('No se pudo acceder al portapapeles. Usa "Añadir foto" para subir la imagen.');
-    }
+  function guardarCard(card) {
+    const id = card.dataset.id;
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (!d[id]) d[id] = {};
+    d[id].cat    = card.querySelector('.card-cat').textContent.trim();
+    d[id].titulo = card.querySelector('.card-title').textContent.trim();
+    d[id].desc   = card.querySelector('.card-desc').textContent.trim();
+    d[id].precio = card.querySelector('.card-precio').innerHTML;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+    const btn = card.querySelector('.btn-guardar-card');
+    btn.textContent = '✓ Guardado';
+    setTimeout(() => { btn.textContent = '💾 Guardar texto'; }, 2000);
   }
 
-  // Descargar HTML con todo el contenido incrustado
+  // ── DESCARGAR HTML CON TODO INCRUSTADO ───────────────
   function exportarHTML() {
+    // Antes de exportar, poner las imágenes directamente en el HTML
+    cards.forEach(card => {
+      const id = card.dataset.id;
+      const area = card.querySelector('.img-area');
+      // Las imágenes ya están en el DOM como <img class="card-img">
+      // renderCarousel las pone ahí; el cloneNode las capturará
+    });
+
     const clone = document.documentElement.cloneNode(true);
     clone.body.classList.remove('modo-edicion');
     const adminBtn = clone.querySelector('#btn-admin');
@@ -589,6 +559,7 @@
     const exportBtn = clone.querySelector('#btn-exportar');
     if (exportBtn) exportBtn.style.display = 'none';
     clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+
     const html = '<!DOCTYPE html>\n' + clone.outerHTML;
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -598,87 +569,18 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  function clickImagen(imgArea) {
-    if (!modoEdicion) return;
-    cardEditandoImagen = imgArea.closest('.card');
-    document.getElementById('file-input').click();
-  }
-
-  // Pegar imagen desde portapapeles (Ctrl+V / pegar largo en móvil)
-  document.addEventListener('paste', function(e) {
-    if (!modoEdicion || !cardEditandoImagen) return;
-    const items = e.clipboardData && e.clipboardData.items;
-    if (!items) return;
-    for (const item of items) {
-      if (item.type.startsWith('image/')) {
-        e.preventDefault();
-        const file = item.getAsFile();
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-          const id = cardEditandoImagen.dataset.id;
-          const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-          if (!datos[id]) datos[id] = {};
-          if (!datos[id].imagenes) datos[id].imagenes = [];
-          datos[id].imagenes.push(ev.target.result);
-          const imgArea = cardEditandoImagen.querySelector('.img-area');
-          imgArea.dataset.index = datos[id].imagenes.length - 1;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
-          renderCarousel(cardEditandoImagen);
-        };
-        reader.readAsDataURL(file);
-        break;
-      }
-    }
-  });
-
-  document.getElementById('file-input').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file || !cardEditandoImagen) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      const id = cardEditandoImagen.dataset.id;
-      const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      if (!datos[id]) datos[id] = {};
-      if (!datos[id].imagenes) datos[id].imagenes = [];
-      datos[id].imagenes.push(ev.target.result);
-      const imgArea = cardEditandoImagen.querySelector('.img-area');
-      imgArea.dataset.index = datos[id].imagenes.length - 1;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
-      renderCarousel(cardEditandoImagen);
-    };
-    reader.readAsDataURL(file);
-    this.value = '';
-  });
-
-  function guardarCard(card) {
-    const id = card.dataset.id;
-    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    const imagenes = (datos[id] && datos[id].imagenes) || [];
-    datos[id] = {
-      cat:      card.querySelector('.card-cat').textContent.trim(),
-      titulo:   card.querySelector('.card-title').textContent.trim(),
-      desc:     card.querySelector('.card-desc').textContent.trim(),
-      precio:   card.querySelector('.card-precio').innerHTML,
-      imagenes: imagenes
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
-    const btn = card.querySelector('.btn-guardar-card');
-    btn.textContent = '✓ Guardado';
-    setTimeout(() => { btn.textContent = '💾 Guardar cambios'; }, 2000);
-  }
-
+  // ── CARGA INICIAL ───────────────────────────────────
   function cargarDatos() {
-    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     cards.forEach(card => {
-      const d = datos[card.dataset.id];
-      if (!d) return;
-      // Migrar formato antiguo (imagen → imagenes)
-      if (d.imagen && !d.imagenes) { d.imagenes = [d.imagen]; delete d.imagen; }
-      if (d.cat)    card.querySelector('.card-cat').textContent = d.cat;
-      if (d.titulo) card.querySelector('.card-title').textContent = d.titulo;
-      if (d.desc)   card.querySelector('.card-desc').textContent = d.desc;
-      if (d.precio) card.querySelector('.card-precio').innerHTML = d.precio;
-      renderCarousel(card);
+      const id = card.dataset.id;
+      const data = d[id];
+      if (!data) return;
+      if (data.cat)    card.querySelector('.card-cat').textContent = data.cat;
+      if (data.titulo) card.querySelector('.card-title').textContent = data.titulo;
+      if (data.desc)   card.querySelector('.card-desc').textContent = data.desc;
+      if (data.precio) card.querySelector('.card-precio').innerHTML = data.precio;
+      if (data.imagenes && data.imagenes.length > 0) renderCarousel(card);
     });
   }
 
