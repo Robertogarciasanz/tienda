@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CASA TUDELA · Móvil</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>
+        :root { --azul:#001f54; --verde:#10b981; --fondo:#f1f5f9; --rojo:#ef4444; }
+        * { box-sizing: border-box; }
+        body { font-family:'Segoe UI',sans-serif; background:var(--fondo); margin:0; padding:10px; color:#1e293b; }
+
+        /* HEADER */
+        header { background:var(--azul); color:white; padding:10px 14px; border-radius:12px;
+                 display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+        header h1 { margin:0; font-size:18px; }
+        #reloj { font-family:monospace; font-size:12px; color:#94a3b8; }
+
+        /* BOTÓN ESCANEAR — protagonista en móvil */
+        #btn-scan { width:100%; padding:16px; background:var(--verde); color:white; border:none;
+                    border-radius:14px; font-size:18px; font-weight:900; cursor:pointer;
+                    margin-bottom:10px; letter-spacing:1px; }
+
+        /* FORMULARIO MANUAL */
+        .entrada { background:#cbd5e1; padding:12px; border-radius:12px; margin-bottom:12px; }
+        .fila2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px; }
+        .fila3 { display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px; margin-bottom:8px; }
+        label { font-size:10px; font-weight:800; color:var(--azul); display:block; margin-bottom:3px; }
+        input, select { padding:10px; border:1.5px solid #94a3b8; border-radius:8px;
+                        width:100%; font-size:14px; }
+        input:focus, select:focus { outline:none; border-color:var(--azul); }
+        #btn-añadir { width:100%; padding:12px; background:var(--azul); color:white;
+                      border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; }
+
+        /* CARRITO */
+        .panel { background:white; border-radius:16px; padding:14px;
+                 box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-bottom:12px; }
+        .panel h3 { margin:0 0 10px; color:var(--azul); font-size:15px; }
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        th { border-bottom:2px solid var(--azul); padding:6px 4px; color:var(--azul); text-align:left; }
+        td { padding:7px 4px; border-bottom:1px solid #e2e8f0; }
+
+        /* TOTAL */
+        .total-box { background:#1e293b; color:white; border-radius:16px; padding:16px;
+                     text-align:center; border:2px solid var(--verde); margin-bottom:10px; }
+        .monto { font-size:38px; font-weight:900; color:var(--verde); display:block; }
+        .items  { font-size:13px; color:#94a3b8; }
+
+        /* BOTONES ACCIÓN */
+        .btn { width:100%; padding:13px; border-radius:10px; border:none; font-weight:700;
+               cursor:pointer; font-size:14px; margin-bottom:8px; }
+        .btn-verde  { background:var(--verde); color:white; font-size:16px; }
+        .btn-azul   { background:#3b82f6; color:white; }
+        .btn-gris   { background:#64748b; color:white; }
+        .btn-oscuro { background:#1e293b; color:white; }
+
+        /* MODAL ESCÁNER */
+        #modal-scanner { position:fixed;top:0;left:0;width:100%;height:100%;
+                         background:rgba(0,0,0,0.92);display:none;z-index:5000;
+                         align-items:center;justify-content:center;flex-direction:column; }
+        #modal-scanner.activo { display:flex; }
+        #scanner-region { width:min(92vw,380px); border-radius:14px; overflow:hidden;
+                          border:3px solid var(--verde); }
+        #scanner-info { color:white; margin-top:14px; font-size:15px;
+                        text-align:center; padding:0 20px; min-height:24px; }
+        #btn-cerrar-scanner { margin-top:18px; padding:13px 36px; background:var(--rojo);
+                              color:white; border:none; border-radius:10px;
+                              font-size:16px; font-weight:bold; cursor:pointer; }
+
+        /* MODAL INVENTARIO */
+        #modal-inventario { position:fixed;top:0;left:0;width:100%;height:100%;
+                            background:rgba(0,0,0,0.75);display:none;z-index:3000;
+                            align-items:center;justify-content:center; }
+        #modal-inventario.activo { display:flex; }
+        .modal-content { background:#f1f5f9; width:96%; max-width:600px; height:92vh;
+                         border-radius:18px; padding:14px 16px; overflow-y:auto; position:relative; }
+        .cerrar-modal { position:absolute;top:12px;right:14px;font-size:30px;
+                        cursor:pointer;color:var(--rojo); }
+        #inv-buscar { width:100%;padding:10px 14px;border:1.5px solid #cbd5e1;
+                      border-radius:10px;font-size:15px;margin:10px 0 8px; }
+        #inv-buscar:focus { outline:none; border-color:var(--azul); }
+        .inv-contador { font-size:12px;color:#64748b;margin-bottom:8px; }
+        #lista-inventario { display:flex;flex-direction:column;gap:5px; }
+        .inv-fila { display:grid;grid-template-columns:1fr 84px 48px 36px;gap:6px;
+                    align-items:center;background:white;border-radius:10px;
+                    padding:8px 10px;border:1px solid #e2e8f0; }
+        .inv-fila:nth-child(even) { background:#f8fafc; }
+        .inv-nom { font-size:13px;font-weight:700;color:var(--azul);
+                   white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+        .inv-cod { font-size:10px;color:#94a3b8;font-family:monospace; }
+        .inv-pre { padding:5px 6px;border:1.5px solid #cbd5e1;border-radius:7px;
+                   width:100%;font-size:14px;font-weight:700;text-align:right; }
+        .inv-pre:focus { outline:none;border-color:var(--azul); }
+        .iva-badge { background:var(--azul);color:#fff;font-size:10px;font-weight:800;
+                     padding:3px 6px;border-radius:20px;text-align:center; }
+        .btn-del { background:#fee2e2;color:#b91c1c;border:none;border-radius:7px;
+                   cursor:pointer;font-size:16px;padding:4px 8px; }
+
+        /* TOAST */
+        #toast { position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+                 background:rgba(30,41,59,0.95);color:white;padding:14px 24px;
+                 border-radius:14px;display:none;z-index:6000;text-align:center;
+                 font-size:14px;font-weight:600;max-width:90vw; }
+
+        /* PRINT */
+        #ticket-imprimible { display:none; }
+        @media print {
+            @page { size:80mm auto; margin:0; }
+            html, body {
+                width:80mm !important;
+                height:auto !important;
+                overflow:hidden !important;
+                margin:0 !important; padding:0 !important;
+            }
+            body * { display:none !important; }
+            #ticket-imprimible {
+                display:block !important;
+                visibility:visible !important;
+                position:static !important;
+                width:80mm !important;
+                padding:6px 10px !important;
+                font-family:'Courier New',monospace !important;
+                font-size:11px !important;
+                color:black !important;
+                margin:0 !important;
+            }
+            #ticket-imprimible * {
+                display:revert !important;
+                visibility:visible !important;
+            }
+        }
+    </style>
+</head>
+<body onload="inicializar()">
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- MODAL ESCÁNER -->
+<div id="modal-scanner">
+    <div id="scanner-region"></div>
+    <div id="scanner-info">📷 Apunta al código de barras o QR</div>
+    <button id="btn-cerrar-scanner" onclick="cerrarScanner()">✕ CANCELAR</button>
+</div>
+
+<!-- MODAL INVENTARIO -->
+<div id="modal-inventario">
+    <div class="modal-content">
+        <span class="cerrar-modal" onclick="cerrarInventario()">×</span>
+        <h2 style="color:var(--azul);margin-top:0;margin-bottom:4px;">⚙️ PRODUCTOS</h2>
+        <input type="search" id="inv-buscar" placeholder="🔍 Buscar nombre o código…" oninput="filtrarInventario(this.value)">
+        <div class="inv-contador" id="inv-contador"></div>
+        <div id="lista-inventario"></div>
+        <br>
+        <button class="btn btn-azul" onclick="cerrarInventario()">✅ VOLVER A VENTAS</button>
+    </div>
+</div>
+
+<!-- TICKET IMPRIMIBLE -->
+<div id="ticket-imprimible">
+    <center><strong>CASA TUDELA</strong><br>NIF: B47489612<hr>
+    <div id="t-fecha"></div><hr></center>
+    <table style="width:100%;border:none;"><tbody id="t-lista"></tbody></table>
+    <hr><div style="text-align:right;font-weight:bold;">TOTAL: <span id="t-total">0,00€</span></div>
+    <br><center><div id="t-qr-print"></div><br>¡Gracias!</center>
+</div>
+
+<header>
+    <div>
+        <h1>🏰 CASA TUDELA</h1>
+        <small style="color:#94a3b8">Roberto García Sanz · v4.26 📱</small>
+    </div>
+    <div id="reloj"></div>
+</header>
+
+
+<a href="index.html" style="display:inline-flex;align-items:center;gap:6px;
+   background:rgba(0,31,84,0.08);color:#001f54;padding:8px 16px;border-radius:50px;
+   font-size:13px;font-weight:600;margin-bottom:10px;text-decoration:none;
+   border:1px solid rgba(0,31,84,0.15);">← Volver a inicio</a>
+
+<!-- BOTÓN ESCANEAR -->
+<button id="btn-scan" onclick="abrirScanner()">📷 ESCANEAR CÓDIGO</button>
+
+<!-- FORMULARIO MANUAL -->
+<div class="entrada">
+    <div class="fila2">
+        <div><label>Código</label>
+            <input type="text" id="p-cod" inputmode="numeric" placeholder="Escanea o escribe">
+        </div>
+        <div><label>IVA</label>
+            <select id="p-iva">
+                <option value="10">10%</option>
+                <option value="4">4%</option>
+                <option value="21">21%</option>
+            </select>
+        </div>
+    </div>
+    <div class="fila3">
+        <div><label>Nombre del producto</label>
+            <input type="text" id="p-nom" placeholder="Nombre">
+        </div>
+        <div><label>Precio €</label>
+            <input type="number" id="p-pre" step="0.01" min="0" placeholder="0,00"
+                   onkeypress="if(event.key==='Enter') añadirManual()">
+        </div>
+        <div style="display:flex;align-items:flex-end;">
+            <button id="btn-añadir" onclick="añadirManual()">➕ AÑADIR</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOTAL -->
+<div class="total-box">
+    <span class="items" id="v-items">0 artículos</span>
+    <span class="monto" id="v-total">0,00€</span>
+</div>
+
+<!-- CARRITO -->
+<div class="panel">
+    <h3>🛒 Carrito</h3>
+    <table>
+        <thead><tr>
+            <th>Cant.</th><th>Producto</th>
+            <th style="text-align:right">Total</th><th></th>
+        </tr></thead>
+        <tbody id="cuerpo-tabla"></tbody>
+    </table>
+</div>
+
+<!-- ACCIONES -->
+<button class="btn btn-verde" onclick="cobrar()">✅ REGISTRAR COMPRA</button>
+<button class="btn btn-azul"  onclick="handlePrint()">🖨️ IMPRIMIR TICKET</button>
+<button class="btn btn-gris"  onclick="verCaja()">📊 CAJA HOY</button>
+<button class="btn btn-oscuro" onclick="abrirInventario()">⚙️ GESTIÓN INVENTARIO</button>
+
+<br><br>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  INVENTARIO BASE
+// ═══════════════════════════════════════════════════════
+const BASE = [
+    {cod:"8410436392693", nom:"Lejia Multiusos 2Litros",        pre:3.60, iva:10},
+    {cod:"4084500617421", nom:"Fairy 820",                       pre:3.95, iva:10},
+    {cod:"8413402980306", nom:"Agua San Joaquin 1.5L",           pre:0.75, iva:10},
+    {cod:"8410379942788", nom:"Auchan Leche 1L",                 pre:1.56, iva:10},
+    {cod:"8435177059216", nom:"Nueces Cáscara de Auchan",        pre:3.45, iva:10},
+    {cod:"8433111000188", nom:"Papel de Cocina Auchan 90m",      pre:2.90, iva:10},
+    {cod:"8437015354477", nom:"12 Huevos Gallina C",             pre:3.69, iva: 4},
+    {cod:"8410500025809", nom:"Casa Oikos Sabor Lima Limon X4",  pre:2.49, iva: 4},
+    {cod:"8410352208337", nom:"Auchan Aceite Oliva 1L",          pre:4.35, iva: 4},
+    {cod:"8429583008760", nom:"BONITO NORTE MSC",                pre:7.52, iva:10},
+    {cod:"8411293020170", nom:"MANTEQUILLA C/SAL 250G",          pre:2.24, iva:10},
+    {cod:"8410416014614", nom:"Tomate frito 550g",               pre:0.88, iva:10},
+    {cod:"8435177019210", nom:"Naranja Lane-Tarde 4K Auchan",    pre:4.99, iva: 4},
+    {cod:"8411921509855", nom:"BOLSA 50X60CM",                   pre:0.12, iva:21},
+    {cod:"2073228001751", nom:"PAN PARIS",                       pre:1.75, iva: 4}
+];
+
+let inventario = [];   // inventario activo en memoria
+let carrito    = [];
+
+// ═══════════════════════════════════════════════════════
+//  PERSISTENCIA — clave única para móvil
+// ═══════════════════════════════════════════════════════
+const LS_INV  = 'ct_inventario_v2';   // productos añadidos/modificados
+const LS_VTAS = 'ct_ventas_v2';       // historial de ventas
+
+function cargarInventario() {
+    // 1. Partir del inventario base
+    const mapa = {};
+    BASE.forEach(p => { mapa[p.cod] = {...p}; });
+
+    // 2. Aplicar los cambios guardados (nuevos + modificaciones)
+    let guardados = [];
+    try { guardados = JSON.parse(localStorage.getItem(LS_INV)) || []; } catch(e) {}
+
+    guardados.forEach(p => {
+        mapa[String(p.cod)] = {...p, cod: String(p.cod)};
+    });
+
+    inventario = Object.values(mapa);
+}
+
+function guardarInventario() {
+    // Guardar SOLO los productos que difieren del BASE o son nuevos
+    const cambios = inventario.filter(p => {
+        const orig = BASE.find(b => String(b.cod) === String(p.cod));
+        return !orig                        // producto nuevo
+            || orig.pre !== p.pre           // precio cambiado
+            || orig.nom !== p.nom           // nombre cambiado
+            || orig.iva !== p.iva;          // iva cambiado
+    });
+    try {
+        localStorage.setItem(LS_INV, JSON.stringify(cambios));
+    } catch(e) {
+        toast('⚠️ Error al guardar: ' + e.message);
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+//  ARRANQUE
+// ═══════════════════════════════════════════════════════
+function inicializar() {
+    // Migrar datos del sistema anterior si existen
+    migrarDatosAntiguos();
+    cargarInventario();
+    actualizarUI();
+    toast('✅ ' + inventario.length + ' productos cargados');
+}
+
+function migrarDatosAntiguos() {
+    // Si hay datos del formato anterior, migrarlos al nuevo y borrar los viejos
+    const viejos = localStorage.getItem('prod_nuevos') || localStorage.getItem('inventarioPersonalizado');
+    if (!viejos) return;
+    if (localStorage.getItem(LS_INV)) return; // ya migrado
+
+    try {
+        const arr = JSON.parse(viejos) || [];
+        if (arr.length > 0) {
+            localStorage.setItem(LS_INV, JSON.stringify(arr));
+            toast('📦 Datos anteriores migrados (' + arr.length + ' productos)');
+        }
+    } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════
+//  INVENTARIO — GESTIÓN
+// ═══════════════════════════════════════════════════════
+function abrirInventario() {
+    document.getElementById('inv-buscar').value = '';
+    renderLista(inventario);
+    document.getElementById('modal-inventario').classList.add('activo');
+}
+function cerrarInventario() {
+    document.getElementById('modal-inventario').classList.remove('activo');
+    document.getElementById('p-cod').focus();
+}
+function filtrarInventario(q) {
+    q = q.toLowerCase().trim();
+    const filtrado = q
+        ? inventario.filter(p => p.nom.toLowerCase().includes(q) || String(p.cod).includes(q))
+        : inventario;
+    renderLista(filtrado);
+}
+function renderLista(lista) {
+    const cont = document.getElementById('lista-inventario');
+    document.getElementById('inv-contador').innerText = lista.length + ' productos';
+    cont.innerHTML = '';
+    lista.forEach(p => {
+        const idx = inventario.indexOf(p);
+        const f = document.createElement('div');
+        f.className = 'inv-fila';
+        f.innerHTML = `
+            <div>
+                <div class="inv-nom" title="${p.nom}">${p.nom}</div>
+                <div class="inv-cod">${p.cod || '—'}</div>
+            </div>
+            <input class="inv-pre" type="number" value="${p.pre.toFixed(2)}"
+                   step="0.01" min="0" onchange="modificarPrecio(${idx},this.value)">
+            <span class="iva-badge">${p.iva}%</span>
+            <button class="btn-del" onclick="eliminarProducto(${idx})">🗑</button>`;
+        cont.appendChild(f);
+    });
+}
+function modificarPrecio(idx, v) {
+    inventario[idx].pre = parseFloat(v);
+    guardarInventario();
+    toast('💰 Precio actualizado');
+}
+function eliminarProducto(idx) {
+    if (!confirm('¿Borrar "' + inventario[idx].nom + '"?')) return;
+    inventario.splice(idx, 1);
+    guardarInventario();
+    const q = document.getElementById('inv-buscar').value;
+    filtrarInventario(q);
+    toast('🗑 Producto borrado');
+}
+
+// ═══════════════════════════════════════════════════════
+//  VENTAS
+// ═══════════════════════════════════════════════════════
+function buscar(e) {
+    if (e) e.preventDefault();
+    const c = document.getElementById('p-cod').value.trim();
+    const p = inventario.find(x => String(x.cod) === String(c));
+    if (p) {
+        añadirAlCarrito(p.nom, p.pre, p.iva);
+        document.getElementById('p-cod').value = '';
+    } else {
+        toast('⚠️ Código no encontrado');
+        document.getElementById('p-nom').focus();
+    }
+}
+
+function añadirManual() {
+    const cod = document.getElementById('p-cod').value.trim();
+    const nom = document.getElementById('p-nom').value.trim();
+    const pre = parseFloat(document.getElementById('p-pre').value);
+    const iva = parseInt(document.getElementById('p-iva').value);
+
+    if (!nom) { toast('⚠️ Escribe el nombre'); document.getElementById('p-nom').focus(); return; }
+    if (isNaN(pre) || pre <= 0) { toast('⚠️ Precio no válido'); document.getElementById('p-pre').focus(); return; }
+
+    // ¿El código ya existe en inventario?
+    const existe = cod !== '' && inventario.findIndex(x => String(x.cod) === String(cod)) !== -1;
+
+    if (cod !== '' && !existe) {
+        // Producto NUEVO → guardarlo permanentemente
+        const nuevo = { cod, nom, pre, iva };
+        inventario.push(nuevo);
+        guardarInventario();
+        toast('✅ "' + nom + '" guardado en inventario');
+    }
+
+    añadirAlCarrito(nom, pre, iva);
+    ['p-cod','p-nom','p-pre'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('p-cod').focus();
+}
+
+function añadirAlCarrito(nom, pre, iva) {
+    const it = carrito.find(x => x.nom === nom);
+    it ? it.cant++ : carrito.push({ nom, pre, iva, cant:1 });
+    actualizarUI();
+}
+
+function actualizarUI() {
+    const tbody = document.getElementById('cuerpo-tabla');
+    tbody.innerHTML = '';
+    let total = 0, nitems = 0;
+    carrito.forEach((it, i) => {
+        const sub = it.pre * it.cant;
+        total += sub; nitems += it.cant;
+        tbody.innerHTML += `<tr>
+            <td>${it.cant}x</td>
+            <td>${it.nom}</td>
+            <td align="right">${sub.toFixed(2)}€</td>
+            <td><button onclick="carrito.splice(${i},1);actualizarUI()"
+                style="border:none;background:none;color:red;font-size:16px;cursor:pointer;">✕</button></td>
+        </tr>`;
+    });
+    document.getElementById('v-total').innerText = total.toFixed(2).replace('.', ',') + '€';
+    document.getElementById('v-items').innerText = nitems + ' artículos';
+}
+
+function cobrar() {
+    if (carrito.length === 0) return;
+    let ventas = [];
+    try { ventas = JSON.parse(localStorage.getItem(LS_VTAS)) || []; } catch(e) {}
+    ventas.push({
+        fecha:    new Date().toLocaleString(),
+        total:    carrito.reduce((a,b) => a + b.pre * b.cant, 0),
+        detalles: carrito.map(p => p.cant + 'x ' + p.nom).join(' | ')
+    });
+    localStorage.setItem(LS_VTAS, JSON.stringify(ventas));
+    carrito = [];
+    actualizarUI();
+    toast('✅ Venta registrada');
+    document.getElementById('p-cod').focus();
+}
+
+function verCaja() {
+    let ventas = [];
+    try { ventas = JSON.parse(localStorage.getItem(LS_VTAS)) || []; } catch(e) {}
+    const hoy = new Date().toLocaleDateString();
+    const hoyV = ventas.filter(v => v.fecha.includes(hoy));
+    const total = hoyV.reduce((a, b) => a + b.total, 0);
+    toast('💰 HOY: ' + total.toFixed(2).replace('.', ',') + '€  (' + hoyV.length + ' ventas)');
+}
+
+function descargarExcel() {
+    let ventas = [];
+    try { ventas = JSON.parse(localStorage.getItem(LS_VTAS)) || []; } catch(e) {}
+    let csv = 'Fecha;Productos;Total\n';
+    ventas.forEach(v => {
+        csv += v.fecha + ';' + (v.detalles || '') + ';' + v.total.toFixed(2).replace('.', ',') + '€\n';
+    });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8;'}));
+    a.download = 'Ventas_CasaTudela.csv';
+    a.click();
+}
+
+function handlePrint() {
+    if (carrito.length === 0) return;
+    const f = new Date().toLocaleString();
+    document.getElementById('t-fecha').innerText = f;
+    const tl = document.getElementById('t-lista');
+    tl.innerHTML = '';
+    let txt = 'CASA TUDELA\n' + f + '\n---\n';
+    carrito.forEach(it => {
+        const s = (it.pre * it.cant).toFixed(2);
+        tl.innerHTML += `<tr><td>${it.cant}x</td><td>${it.nom.substring(0,16)}</td><td align="right">${s}€</td></tr>`;
+        txt += `${it.cant}x ${it.nom} - ${s}€\n`;
+    });
+    const tot = document.getElementById('v-total').innerText;
+    document.getElementById('t-total').innerText = tot;
+    txt += '---\nTOTAL: ' + tot;
+    const qr = qrcode(0, 'M'); qr.addData(txt); qr.make();
+    document.getElementById('t-qr-print').innerHTML = qr.createImgTag(5);
+    setTimeout(() => window.print(), 300);
+}
+
+// ═══════════════════════════════════════════════════════
+//  ESCÁNER DE CÁMARA
+// ═══════════════════════════════════════════════════════
+let qrScanner = null;
+let scanActivo = false;
+let scanBloq   = false;
+
+function abrirScanner() {
+    document.getElementById('modal-scanner').classList.add('activo');
+    document.getElementById('scanner-region').innerHTML = '';
+    scanBloq = false;
+
+    qrScanner = new Html5Qrcode('scanner-region');
+
+    Html5Qrcode.getCameras().then(cams => {
+        if (!cams || !cams.length) {
+            document.getElementById('scanner-info').innerText = '❌ No se encontró cámara';
+            return;
+        }
+        const cam = cams.find(c => /back|rear|environment/i.test(c.label)) || cams[cams.length - 1];
+
+        qrScanner.start(
+            { deviceId: { exact: cam.id } },
+            { fps:10, qrbox:{ width:260, height:155 }, aspectRatio:1.6 },
+            onCodigoEscaneado,
+            () => {}
+        ).then(() => {
+            scanActivo = true;
+            document.getElementById('scanner-info').innerText = '📷 Apunta al código de barras o QR';
+        }).catch(err => {
+            document.getElementById('scanner-info').innerText = '❌ ' + err;
+        });
+
+    }).catch(() => {
+        document.getElementById('scanner-info').innerText = '❌ Sin permiso de cámara';
+    });
+}
+
+function cerrarScanner() {
+    scanActivo = false;
+    scanBloq   = false;
+    if (qrScanner) {
+        qrScanner.stop().then(() => { qrScanner.clear(); qrScanner = null; }).catch(() => { qrScanner = null; });
+    }
+    document.getElementById('modal-scanner').classList.remove('activo');
+    setTimeout(() => { document.getElementById('scanner-region').innerHTML = ''; }, 400);
+}
+
+function onCodigoEscaneado(codigo) {
+    if (!scanActivo || scanBloq) return;
+    scanBloq = true;
+    try { qrScanner.pause(true); } catch(e) {}
+
+    if (navigator.vibrate) navigator.vibrate(120);
+    codigo = codigo.trim();
+
+    const info = document.getElementById('scanner-info');
+    const p = inventario.find(x => String(x.cod) === String(codigo));
+
+    if (p) {
+        añadirAlCarrito(p.nom, p.pre, p.iva);
+        info.innerHTML = '<span style="color:#10b981;font-weight:bold">✅ ' + p.nom + '</span>';
+        setTimeout(() => {
+            if (scanActivo) {
+                try { qrScanner.resume(); } catch(e) {}
+                scanBloq = false;
+                info.innerText = '📷 Apunta al siguiente código';
+            }
+        }, 2000);
+    } else {
+        info.innerHTML = '<span style="color:#fbbf24;font-weight:bold">⚠️ Código nuevo — añade nombre y precio</span>';
+        document.getElementById('p-cod').value = codigo;
+        setTimeout(() => {
+            cerrarScanner();
+            setTimeout(() => {
+                document.getElementById('p-nom').value = '';
+                document.getElementById('p-pre').value = '';
+                document.getElementById('p-nom').focus();
+                toast('⚠️ Código ' + codigo + ' — rellena nombre y precio, luego ➕ AÑADIR');
+            }, 350);
+        }, 900);
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════
+let _tt = null;
+function toast(msg) {
+    if (_tt) clearTimeout(_tt);
+    const el = document.getElementById('toast');
+    el.innerText = msg;
+    el.style.display = 'block';
+    _tt = setTimeout(() => { el.style.display = 'none'; }, 2200);
+}
+
+// Reloj
+setInterval(() => document.getElementById('reloj').innerText = new Date().toLocaleTimeString(), 1000);
+</script>
+</body>
+</html>
