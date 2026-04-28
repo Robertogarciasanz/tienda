@@ -55,6 +55,14 @@
     }
     #btn-admin:hover { border-color: var(--oro); color: var(--oro); }
     #btn-admin.activo { border-color: var(--oro); color: var(--azul); background: var(--oro); }
+    #btn-exportar {
+      display: none;
+      background: var(--verde); color: white;
+      border: none; padding: 6px 14px; border-radius: 50px;
+      cursor: pointer; font-size: .82rem; font-weight: 600;
+      transition: all var(--trans); white-space: nowrap;
+    }
+    #btn-exportar:hover { background: #0da271; }
 
     /* CABECERA */
     .page-header { background: linear-gradient(135deg, var(--azul) 0%, var(--azul-mid) 100%); padding: 56px 5vw 48px; text-align: center; position: relative; overflow: hidden; }
@@ -143,6 +151,16 @@
     }
     .img-dot.active { background: white; transform: scale(1.25); }
 
+    /* Botón pegar imagen */
+    .btn-pegar {
+      position: absolute; bottom: 8px; left: 8px;
+      background: rgba(0,0,0,.6); color: white;
+      border: none; padding: 6px 12px; border-radius: 20px;
+      cursor: pointer; font-size: .78rem; font-weight: 600;
+      display: none; align-items: center; gap: 5px; z-index: 6;
+    }
+    .modo-edicion .btn-pegar { display: flex; }
+
     /* Botón eliminar foto */
     .img-delete {
       position: absolute; top: 8px; right: 8px;
@@ -204,6 +222,7 @@
 <nav>
   <div class="nav-logo">🏰 Casa <span>Tudela</span></div>
   <div class="nav-right">
+    <button id="btn-exportar" onclick="exportarHTML()">💾 Descargar HTML</button>
     <button id="btn-admin" onclick="toggleAdmin()">✏️ Editar página</button>
     <a href="index.html" class="nav-back">← Volver a la tienda</a>
   </div>
@@ -231,7 +250,8 @@
     <article class="card" data-id="excavadora" data-nombre="excavadora yanmar b27 maquinaria construccion">
       <div class="img-area" data-index="0" onclick="clickImagen(this)">
         <div class="card-img-placeholder">🚜</div>
-        <div class="img-overlay">📷 Añadir foto · Ctrl+V pegar</div>
+        <div class="img-overlay">📷 Añadir foto</div>
+        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
@@ -263,7 +283,8 @@
     <article class="card" data-id="nokia" data-nombre="nokia 7110 movil telefono coleccion matrix">
       <div class="img-area" data-index="0" onclick="clickImagen(this)">
         <div class="card-img-placeholder">📱</div>
-        <div class="img-overlay">📷 Añadir foto · Ctrl+V pegar</div>
+        <div class="img-overlay">📷 Añadir foto</div>
+        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
@@ -294,7 +315,8 @@
     <article class="card" data-id="bicicleta" data-nombre="bicicleta montaña">
       <div class="img-area" data-index="0" onclick="clickImagen(this)">
         <div class="card-img-placeholder">🚲</div>
-        <div class="img-overlay">📷 Añadir foto · Ctrl+V pegar</div>
+        <div class="img-overlay">📷 Añadir foto</div>
+        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
@@ -325,7 +347,8 @@
     <article class="card" data-id="lampara" data-nombre="lámpara pie salón">
       <div class="img-area" data-index="0" onclick="clickImagen(this)">
         <div class="card-img-placeholder">🪔</div>
-        <div class="img-overlay">📷 Añadir foto · Ctrl+V pegar</div>
+        <div class="img-overlay">📷 Añadir foto</div>
+        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
@@ -356,7 +379,8 @@
     <article class="card" data-id="novelas" data-nombre="libro novela ficción">
       <div class="img-area" data-index="0" onclick="clickImagen(this)">
         <div class="card-img-placeholder">📚</div>
-        <div class="img-overlay">📷 Añadir foto · Ctrl+V pegar</div>
+        <div class="img-overlay">📷 Añadir foto</div>
+        <button class="btn-pegar" onclick="pegarImagenClipboard(event,this.closest('.card'))">📋 Pegar imagen</button>
         <button class="img-prev" onclick="prevImg(event,this)">‹</button>
         <button class="img-next" onclick="nextImg(event,this)">›</button>
         <div class="img-dots"></div>
@@ -517,11 +541,61 @@
     const btn = document.getElementById('btn-admin');
     btn.textContent = modoEdicion ? '✓ Salir de edición' : '✏️ Editar página';
     btn.classList.toggle('activo', modoEdicion);
+    document.getElementById('btn-exportar').style.display = modoEdicion ? 'inline-block' : 'none';
     cards.forEach(card => {
       card.querySelectorAll('.card-cat, .card-title, .card-desc, .card-precio').forEach(el => {
         el.contentEditable = modoEdicion ? 'true' : 'false';
       });
     });
+  }
+
+  // Pegar imagen desde portapapeles (API moderna)
+  async function pegarImagenClipboard(e, card) {
+    e.stopPropagation();
+    try {
+      const items = await navigator.clipboard.read();
+      for (const item of items) {
+        const imageType = item.types.find(t => t.startsWith('image/'));
+        if (imageType) {
+          const blob = await item.getType(imageType);
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            const id = card.dataset.id;
+            const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            if (!datos[id]) datos[id] = {};
+            if (!datos[id].imagenes) datos[id].imagenes = [];
+            datos[id].imagenes.push(ev.target.result);
+            const imgArea = card.querySelector('.img-area');
+            imgArea.dataset.index = datos[id].imagenes.length - 1;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+            renderCarousel(card);
+          };
+          reader.readAsDataURL(blob);
+          return;
+        }
+      }
+      alert('No hay imagen copiada. Copia primero la imagen de Keep.');
+    } catch {
+      alert('No se pudo acceder al portapapeles. Usa "Añadir foto" para subir la imagen.');
+    }
+  }
+
+  // Descargar HTML con todo el contenido incrustado
+  function exportarHTML() {
+    const clone = document.documentElement.cloneNode(true);
+    clone.body.classList.remove('modo-edicion');
+    const adminBtn = clone.querySelector('#btn-admin');
+    if (adminBtn) { adminBtn.textContent = '✏️ Editar página'; adminBtn.classList.remove('activo'); }
+    const exportBtn = clone.querySelector('#btn-exportar');
+    if (exportBtn) exportBtn.style.display = 'none';
+    clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'anuncios.html';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   function clickImagen(imgArea) {
