@@ -55,6 +55,7 @@
       display: flex; align-items: center; gap: 8px;
     }
     .nav-logo span { color: var(--oro); }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
     .nav-back {
       font-size: .85rem; font-weight: 500;
       color: rgba(255,255,255,.7);
@@ -62,6 +63,16 @@
       transition: color var(--trans);
     }
     .nav-back:hover { color: var(--oro); }
+    #btn-admin {
+      background: none;
+      border: 1.5px solid rgba(255,255,255,.3);
+      color: rgba(255,255,255,.7);
+      padding: 6px 14px; border-radius: 50px;
+      cursor: pointer; font-size: .82rem; font-weight: 500;
+      transition: all var(--trans); white-space: nowrap;
+    }
+    #btn-admin:hover { border-color: var(--oro); color: var(--oro); }
+    #btn-admin.activo { border-color: var(--oro); color: var(--azul); background: var(--oro); }
 
     /* CABECERA */
     .page-header {
@@ -115,9 +126,7 @@
       border-color: var(--oro);
       box-shadow: 0 8px 32px rgba(201,168,76,.2);
     }
-    .buscador svg {
-      flex-shrink: 0; margin-left: 18px; opacity: .4;
-    }
+    .buscador svg { flex-shrink: 0; margin-left: 18px; opacity: .4; }
     .buscador input {
       flex: 1; padding: 15px 18px;
       border: none; outline: none;
@@ -137,10 +146,7 @@
     main { padding: 48px 5vw 80px; max-width: 1200px; margin: 0 auto; }
 
     /* CONTADOR */
-    .contador {
-      font-size: .85rem; color: var(--gris);
-      margin-bottom: 24px;
-    }
+    .contador { font-size: .85rem; color: var(--gris); margin-bottom: 24px; }
     .contador strong { color: var(--azul); }
 
     /* GRID */
@@ -164,6 +170,13 @@
       transform: translateY(-6px);
       box-shadow: 0 12px 40px rgba(0,31,84,.14);
     }
+
+    /* ÁREA DE IMAGEN */
+    .img-area {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
     .card-img {
       width: 100%; height: 220px;
       object-fit: cover;
@@ -176,6 +189,44 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 4rem;
     }
+    .img-overlay {
+      display: none;
+      position: absolute; inset: 0;
+      background: rgba(0,31,84,.6);
+      color: white; font-size: .95rem; font-weight: 600;
+      align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer;
+    }
+
+    /* MODO EDICIÓN — imagen */
+    .modo-edicion .img-area { cursor: pointer; }
+    .modo-edicion .img-area:hover .img-overlay { display: flex; }
+    .modo-edicion .card { border-color: rgba(201,168,76,.35); }
+
+    /* Campos editables */
+    [contenteditable="true"] {
+      outline: 2px dashed var(--oro) !important;
+      border-radius: 6px;
+      padding: 3px 5px !important;
+      min-height: 1.2em;
+      cursor: text;
+    }
+    [contenteditable="true"]:focus { outline: 2px solid var(--oro) !important; }
+
+    /* Botón guardar por tarjeta */
+    .btn-guardar-card {
+      display: none;
+      width: 100%; margin-top: 12px;
+      padding: 10px; border-radius: 50px;
+      background: var(--azul); color: white;
+      border: none; cursor: pointer;
+      font-size: .88rem; font-weight: 600;
+      transition: background var(--trans);
+    }
+    .btn-guardar-card:hover { background: var(--azul-mid); }
+    .modo-edicion .btn-guardar-card { display: block; }
+
+    /* CARD BODY */
     .card-body {
       padding: 18px 20px 20px;
       flex: 1; display: flex; flex-direction: column;
@@ -278,11 +329,14 @@
 </head>
 <body>
 
+<input type="file" id="file-input" accept="image/*" style="display:none">
+
 <nav>
   <div class="nav-logo">🏰 Casa <span>Tudela</span></div>
-  <a href="index.html" class="nav-back">
-    ← Volver a la tienda
-  </a>
+  <div class="nav-right">
+    <button id="btn-admin" onclick="toggleAdmin()">✏️ Editar página</button>
+    <a href="index.html" class="nav-back">← Volver a la tienda</a>
+  </div>
 </nav>
 
 <div class="page-header">
@@ -313,9 +367,11 @@
   <div class="grid" id="grid">
 
     <!-- ═══════════════ EXCAVADORA YANMAR ═══════════════ -->
-    <article class="card" data-nombre="excavadora yanmar b27 maquinaria construccion">
-      <div class="card-img-placeholder">🚜</div>
-      <!-- <img class="card-img" src="fotos/excavadora.jpg" alt="Excavadora Yanmar B27"> -->
+    <article class="card" data-id="excavadora" data-nombre="excavadora yanmar b27 maquinaria construccion">
+      <div class="img-area" onclick="clickImagen(this)">
+        <div class="card-img-placeholder">🚜</div>
+        <div class="img-overlay">📷 Cambiar foto</div>
+      </div>
       <div class="card-body">
         <div class="card-cat">Maquinaria de construcción</div>
         <div class="card-title">Excavadora Yanmar B27-2A</div>
@@ -343,14 +399,45 @@
             Ver en Milanuncios
           </a>
         </div>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
       </div>
     </article>
 
-    <!-- ═══════════════ PRODUCTO 1 ═══════════════ -->
-    <article class="card" data-nombre="bicicleta montaña">
-      <div class="card-img-placeholder">🚲</div>
-      <!-- Para añadir foto real, sustituye la línea de arriba por:
-           <img class="card-img" src="fotos/bicicleta.jpg" alt="Bicicleta de montaña"> -->
+    <!-- ═══════════════ NOKIA 7110 ═══════════════ -->
+    <article class="card" data-id="nokia" data-nombre="nokia 7110 movil telefono coleccion matrix">
+      <div class="img-area" onclick="clickImagen(this)">
+        <div class="card-img-placeholder">📱</div>
+        <div class="img-overlay">📷 Cambiar foto</div>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Telefonía · Colección</div>
+        <div class="card-title">Nokia 7110 — El de Matrix</div>
+        <p class="card-desc">Icónico Nokia de 1999, primer WAP del mundo. Tapa deslizante con botón mecánico, Navi Roller, antena original. Buen estado estético. El teléfono de la película Matrix.</p>
+        <div class="card-footer">
+          <div class="card-precio">A convenir</div>
+        </div>
+        <div class="card-acciones">
+          <a class="btn-whatsapp"
+             href="https://wa.me/34607444903?text=Hola%2C%20me%20interesa%20el%20Nokia%207110%20que%20anuncias%20en%20Casa%20Tudela.%20%C2%BFSigue%20disponible%3F"
+             target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.852L.057 23.5l5.793-1.44A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.371l-.36-.213-3.44.856.9-3.347-.233-.372A9.818 9.818 0 1112 21.818z"/></svg>
+            WhatsApp
+          </a>
+          <a class="btn-paypal" href="https://www.paypal.com/ncp/payment/T3HG588SPKYX4" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.68H8.726a.483.483 0 01-.477-.558l.245-1.55.58-3.682.023-.13h1.61c3.92 0 6.987-1.59 7.886-6.194.381-1.958.184-3.595-.526-4.076zm-2.96-3.627c-.437-.504-1.03-.927-1.765-1.236A8.39 8.39 0 0012.1 3H5.16a.807.807 0 00-.795.68L2.006 19.21a.483.483 0 00.477.558h3.47l.87-5.516-.027.18a.804.804 0 01.794-.68h1.655c3.24 0 5.776-1.315 6.514-5.12.022-.113.042-.223.059-.33.22-1.408.013-2.366-.71-3.451z"/></svg>
+            PayPal
+          </a>
+        </div>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
+      </div>
+    </article>
+
+    <!-- ═══════════════ BICICLETA ═══════════════ -->
+    <article class="card" data-id="bicicleta" data-nombre="bicicleta montaña">
+      <div class="img-area" onclick="clickImagen(this)">
+        <div class="card-img-placeholder">🚲</div>
+        <div class="img-overlay">📷 Cambiar foto</div>
+      </div>
       <div class="card-body">
         <div class="card-cat">Deportes</div>
         <div class="card-title">Bicicleta de montaña 26"</div>
@@ -370,13 +457,16 @@
             PayPal
           </a>
         </div>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
       </div>
     </article>
 
-    <!-- ═══════════════ PRODUCTO 2 ═══════════════ -->
-    <article class="card" data-nombre="lámpara pie salón">
-      <div class="card-img-placeholder">🪔</div>
-      <!-- <img class="card-img" src="fotos/lampara.jpg" alt="Lámpara de pie"> -->
+    <!-- ═══════════════ LÁMPARA ═══════════════ -->
+    <article class="card" data-id="lampara" data-nombre="lámpara pie salón">
+      <div class="img-area" onclick="clickImagen(this)">
+        <div class="card-img-placeholder">🪔</div>
+        <div class="img-overlay">📷 Cambiar foto</div>
+      </div>
       <div class="card-body">
         <div class="card-cat">Hogar · Decoración</div>
         <div class="card-title">Lámpara de pie estilo nórdico</div>
@@ -396,13 +486,16 @@
             PayPal
           </a>
         </div>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
       </div>
     </article>
 
-    <!-- ═══════════════ PRODUCTO 3 ═══════════════ -->
-    <article class="card" data-nombre="libro novela ficción">
-      <div class="card-img-placeholder">📚</div>
-      <!-- <img class="card-img" src="fotos/libro.jpg" alt="Libro"> -->
+    <!-- ═══════════════ NOVELAS ═══════════════ -->
+    <article class="card" data-id="novelas" data-nombre="libro novela ficción">
+      <div class="img-area" onclick="clickImagen(this)">
+        <div class="card-img-placeholder">📚</div>
+        <div class="img-overlay">📷 Cambiar foto</div>
+      </div>
       <div class="card-body">
         <div class="card-cat">Libros</div>
         <div class="card-title">Lote de novelas (5 libros)</div>
@@ -422,6 +515,7 @@
             PayPal
           </a>
         </div>
+        <button class="btn-guardar-card" onclick="guardarCard(this.closest('.card'))">💾 Guardar cambios</button>
       </div>
     </article>
 
@@ -444,6 +538,7 @@
   const sinResultados = document.getElementById('sin-resultados');
   const contador = document.getElementById('contador');
 
+  // ── BUSCADOR ──────────────────────────────────────
   function actualizarContador(visibles) {
     contador.innerHTML = visibles === cards.length
       ? `<strong>${cards.length}</strong> artículos disponibles`
@@ -453,7 +548,6 @@
   function filtrar(q) {
     q = q.trim().toLowerCase();
     btnLimpiar.style.display = q ? 'block' : 'none';
-
     let visibles = 0;
     cards.forEach(card => {
       const texto = (card.dataset.nombre + ' ' + card.querySelector('.card-title').textContent + ' ' + card.querySelector('.card-desc').textContent).toLowerCase();
@@ -461,10 +555,8 @@
       card.style.display = coincide ? '' : 'none';
       if (coincide) visibles++;
     });
-
-    const hayResultados = visibles > 0;
-    sinResultados.classList.toggle('visible', !hayResultados);
-    if (!hayResultados) document.getElementById('termino-buscado').textContent = q;
+    sinResultados.classList.toggle('visible', visibles === 0);
+    if (visibles === 0) document.getElementById('termino-buscado').textContent = q;
     actualizarContador(visibles);
   }
 
@@ -475,7 +567,97 @@
     filtrar('');
   }
 
-  // Inicializar contador
+  // ── MODO EDICIÓN ──────────────────────────────────
+  const STORAGE_KEY = 'ct_anuncios_v1';
+  let modoEdicion = false;
+  let cardEditandoImagen = null;
+
+  function toggleAdmin() {
+    modoEdicion = !modoEdicion;
+    document.body.classList.toggle('modo-edicion', modoEdicion);
+    const btn = document.getElementById('btn-admin');
+    btn.textContent = modoEdicion ? '✓ Salir de edición' : '✏️ Editar página';
+    btn.classList.toggle('activo', modoEdicion);
+
+    cards.forEach(card => {
+      card.querySelectorAll('.card-cat, .card-title, .card-desc, .card-precio').forEach(el => {
+        el.contentEditable = modoEdicion ? 'true' : 'false';
+      });
+    });
+  }
+
+  function clickImagen(imgArea) {
+    if (!modoEdicion) return;
+    cardEditandoImagen = imgArea.closest('.card');
+    document.getElementById('file-input').click();
+  }
+
+  document.getElementById('file-input').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file || !cardEditandoImagen) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const imgArea = cardEditandoImagen.querySelector('.img-area');
+      const placeholder = imgArea.querySelector('.card-img-placeholder');
+      let img = imgArea.querySelector('.card-img');
+      if (!img) {
+        img = document.createElement('img');
+        img.className = 'card-img';
+        img.alt = cardEditandoImagen.querySelector('.card-title').textContent;
+        if (placeholder) placeholder.replaceWith(img);
+        else imgArea.insertBefore(img, imgArea.firstChild);
+      }
+      img.src = ev.target.result;
+      guardarCard(cardEditandoImagen);
+    };
+    reader.readAsDataURL(file);
+    this.value = '';
+  });
+
+  function guardarCard(card) {
+    const id = card.dataset.id;
+    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const img = card.querySelector('.card-img');
+    datos[id] = {
+      cat:    card.querySelector('.card-cat').textContent.trim(),
+      titulo: card.querySelector('.card-title').textContent.trim(),
+      desc:   card.querySelector('.card-desc').textContent.trim(),
+      precio: card.querySelector('.card-precio').innerHTML,
+      imagen: (img && img.src && !img.src.startsWith('data:,')) ? img.src : null
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+    const btn = card.querySelector('.btn-guardar-card');
+    const original = btn.textContent;
+    btn.textContent = '✓ Guardado';
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  }
+
+  function cargarDatos() {
+    const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    cards.forEach(card => {
+      const d = datos[card.dataset.id];
+      if (!d) return;
+      if (d.imagen) {
+        const imgArea = card.querySelector('.img-area');
+        const placeholder = imgArea.querySelector('.card-img-placeholder');
+        let img = imgArea.querySelector('.card-img');
+        if (!img) {
+          img = document.createElement('img');
+          img.className = 'card-img';
+          if (placeholder) placeholder.replaceWith(img);
+          else imgArea.insertBefore(img, imgArea.firstChild);
+        }
+        img.src = d.imagen;
+        img.alt = d.titulo || '';
+      }
+      if (d.cat)    card.querySelector('.card-cat').textContent = d.cat;
+      if (d.titulo) card.querySelector('.card-title').textContent = d.titulo;
+      if (d.desc)   card.querySelector('.card-desc').textContent = d.desc;
+      if (d.precio) card.querySelector('.card-precio').innerHTML = d.precio;
+    });
+  }
+
+  cargarDatos();
   actualizarContador(cards.length);
 </script>
 </body>
