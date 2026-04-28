@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Casa Tudela — Productos del Hogar · Tudela de Duero, Valladolid</title>
-  <meta name="description" content="Casa Tudela, tu tienda de productos del hogar en Tudela de Duero, Valladolid. Calidad, proximidad y atención personal desde 2026. Ven a visitarnos.">
-  <meta name="keywords" content="casa tudela, tienda hogar, productos limpieza, tudela de duero, valladolid, alimentación">
+  <meta name="description" content="Casa Tudela, tu tienda de productos del hogar en Tudela. Calidad, proximidad y atención personal desde 2026. Ven a visitarnos.">
+  <meta name="keywords" content="casa tudela, tienda hogar, productos limpieza, tudela navarra, alimentación">
   <meta property="og:title" content="Casa Tudela — Productos del Hogar">
   <meta property="og:description" content="Tu tienda de confianza en Tudela. Productos de calidad, trato cercano.">
   <meta property="og:type" content="website">
@@ -438,7 +438,7 @@
 
     /* Reveal on scroll */
     .reveal {
-      opacity: 1; transform: translateY(0);
+      opacity: 0; transform: translateY(28px);
       transition: opacity .7s ease, transform .7s ease;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -478,6 +478,8 @@
       <li><a href="#productos">Productos</a></li>
       <li><a href="#sobre">Nosotros</a></li>
       <li><a href="#contacto">Contacto</a></li>
+      <li><a href="anuncios.html">Anuncios</a></li>
+      <li><a href="app.html" class="nav-cta">Abrir TPV</a></li>
     </ul>
     <div class="nav-burger" onclick="toggleMenu()" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -680,9 +682,10 @@
     <div class="sobre-texto reveal">
       <div class="section-tag">Nuestra historia</div>
       <h2 class="section-title">Un negocio<br><em>familiar</em> con valores</h2>
-      <p class="section-sub">Casa Tudela nació en Tudela de Duero, Valladolid de la convicción de que el comercio de proximidad sigue siendo necesario. Aquí cada cliente es conocido y bienvenido.</p>
+      <p class="section-sub">Casa Tudela nació de la convicción de que el comercio de proximidad sigue siendo necesario. Aquí cada cliente es conocido y bienvenido.</p>
       <ul class="sobre-lista">
         <li>Productos de primera necesidad siempre disponibles</li>
+        <li>Gestión moderna con sistema TPV propio</li>
         <li>Tickets detallados con IVA desglosado</li>
         <li>Inventario actualizado en tiempo real</li>
         <li>Compromiso con el comercio local de Tudela</li>
@@ -742,14 +745,14 @@
     <h2 class="section-title">Ven a <em>visitarnos</em><br>cuando quieras</h2>
     <p class="section-sub">Estamos en Tudela de Duero, Valladolid. Puedes venir directamente o contactar con nosotros. Estaremos encantados de atenderte.</p>
     <div class="cta-btns">
-      <a href="tel:+34607444903" class="btn-oro">📞 Llamar: 607 44 49 03</a>
+      <a href="mailto:robgarsanz@gmail.com" class="btn-oro">✉️ Escribir email</a>
       <a href="#productos" class="btn-outline" style="color:white; border:1.5px solid rgba(255,255,255,.4); padding:14px 32px; border-radius:50px; font-weight:500;">Ver productos</a>
     </div>
     <div style="margin-top:48px; display:flex; justify-content:center; gap:48px; flex-wrap:wrap;">
       <div style="text-align:center; color:rgba(255,255,255,.7)">
         <div style="font-size:1.8rem; margin-bottom:6px;">📍</div>
-        <div style="font-size:.9rem; font-weight:500; color:white;">Tudela de Duero</div>
-        <div style="font-size:.82rem;">Castilla y León</div>
+        <div style="font-size:.9rem; font-weight:500; color:white;">Tudela de Duero, Valladolid</div>
+        <div style="font-size:.82rem;">Valladolid, Castilla y León</div>
       </div>
       <div style="text-align:center; color:rgba(255,255,255,.7)">
         <div style="font-size:1.8rem; margin-bottom:6px;">🕘</div>
@@ -757,13 +760,8 @@
         <div style="font-size:.82rem;">9:00 – 20:00</div>
       </div>
       <div style="text-align:center; color:rgba(255,255,255,.7)">
-        <div style="font-size:1.8rem; margin-bottom:6px;">📞</div>
-        <div style="font-size:.9rem; font-weight:500; color:white;"><a href="tel:+34607444903" style="color:white;">607 44 49 03</a></div>
-        <div style="font-size:.82rem;">Llámanos cuando quieras</div>
-      </div>
-      <div style="text-align:center; color:rgba(255,255,255,.7)">
         <div style="font-size:1.8rem; margin-bottom:6px;">📧</div>
-        <div style="font-size:.9rem; font-weight:500; color:white;"><a href="mailto:robgarsanz@gmail.com" style="color:rgba(255,255,255,.5);">robgarsanz@gmail.com</a></div>
+        <div style="font-size:.9rem; font-weight:500; color:white;">robgarsanz@gmail.com</div>
         <div style="font-size:.82rem;">Respondemos en 24h</div>
       </div>
     </div>
@@ -795,23 +793,41 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <div>© 2026 <span>Excavaciones y Servicios Arturo S.L.</span> · Roberto García Sanz · NIF: B47489612 · <a href="mailto:robgarsanz@gmail.com" style="color:rgba(255,255,255,.5);">robgarsanz@gmail.com</a></div>
+      <div>© 2026 <span>Casa Tudela</span> · Roberto García Sanz · robgarsanz@gmail.com</div>
       <div>Hecho con ❤️ en Tudela de Duero, Valladolid</div>
     </div>
   </footer>
+
   <script>
+    // Menú móvil
     function toggleMenu() {
       document.getElementById('nav').classList.toggle('open');
     }
+
+    // Cerrar menú al hacer clic en un enlace
     document.querySelectorAll('.nav-links a').forEach(a => {
       a.addEventListener('click', () => document.getElementById('nav').classList.remove('open'));
     });
+
+    // Scroll reveal
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          // Stagger por orden en el DOM
+          const delay = Array.from(e.target.parentNode?.children || []).indexOf(e.target) * 80;
+          setTimeout(() => e.target.classList.add('visible'), delay);
+          observer.unobserve(e.target);
+        }
       });
     }, { threshold: 0.12 });
+
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Nav sombra al hacer scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').style.boxShadow =
+        window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,.3)' : 'none';
+    });
   </script>
 </body>
 </html>
