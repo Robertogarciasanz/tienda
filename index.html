@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa Tudela — Próximamente</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #001f54;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .badge-prueba {
+      background: #ef4444;
+      color: white;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    h1 span { color: #c9a84c; }
+
+    p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.65);
+      max-width: 400px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .contacto {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .contacto a {
+      color: rgba(255,255,255,.8);
+      text-decoration: none;
+      font-size: .95rem;
+      transition: color .2s;
+    }
+
+    .contacto a:hover { color: #c9a84c; }
+
+    .sep {
+      width: 40px;
+      height: 2px;
+      background: rgba(201,168,76,.4);
+      margin: 32px auto;
+    }
+
+    .enlaces {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .enlaces a {
+      color: rgba(255,255,255,.5);
+      font-size: .85rem;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,.15);
+      padding: 8px 18px;
+      border-radius: 50px;
+      transition: all .2s;
+    }
+
+    .enlaces a:hover {
+      color: white;
+      border-color: rgba(255,255,255,.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="badge-prueba">⚠ Página de prueba</div>
+
+  <div class="logo">🏰</div>
+  <h1>Casa <span>Tudela</span></h1>
+  <p>Tienda de productos del hogar en Tudela de Duero, Valladolid. Estamos preparando algo mejor.</p>
+
+  <div class="contacto">
+    <a href="mailto:robgarsanz@gmail.com">📧 robgarsanz@gmail.com</a>
+    <a href="https://wa.me/34607444903">💬 WhatsApp</a>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="enlaces">
+    <a href="anuncios.html">Ver anuncios</a>
+    <a href="app.html">App de caja</a>
+  </div>
+
+</body>
+</html>
