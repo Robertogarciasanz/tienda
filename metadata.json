@@ -1,0 +1,6 @@
+{
+  "name": "STL 3D Viewer",
+  "description": "Un visor interactivo en tiempo real para archivos 3D STL con herramientas de medición, análisis de geometría y estimación de impresión 3D.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
