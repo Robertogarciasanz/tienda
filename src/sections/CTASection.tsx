@@ -25,6 +25,12 @@ export function CTASection({ onScrollToViewer }: CTASectionProps) {
         >
           Comenzar proyecto
         </button>
+        <p className="mt-6 text-sm text-[#4D4D4D]">
+          O llamanos directamente:{' '}
+          <a href="tel:+34607444903" className="text-[#7A7A7A] hover:text-[#F5F5F5] transition-colors">
+            607 444 903
+          </a>
+        </p>
       </div>
     </section>
   );
