@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { Navigation } from '@/sections/Navigation';
-import { HeroSection } from '@/sections/HeroSection';
 import { STLViewerSection } from '@/sections/STLViewerSection';
 import { CapabilitiesSection } from '@/sections/CapabilitiesSection';
 import { CTASection } from '@/sections/CTASection';
@@ -19,10 +18,6 @@ function App() {
   return (
     <div className="min-h-screen bg-[#1A1A1A]">
       <Navigation onScrollTo={scrollTo} />
-      <HeroSection
-        onScrollToViewer={() => scrollTo('viewer')}
-        onScrollToServices={() => scrollTo('capabilities')}
-      />
       <STLViewerSection />
       <CapabilitiesSection />
       <CTASection onScrollToViewer={() => scrollTo('viewer')} />

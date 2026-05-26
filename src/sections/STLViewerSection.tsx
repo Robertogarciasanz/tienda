@@ -73,7 +73,7 @@ export function STLViewerSection() {
   return (
     <section
       id="viewer"
-      className="bg-[#1A1A1A] py-[120px]"
+      className="bg-[#1A1A1A] pt-[96px] pb-[80px]"
     >
       {/* Section header */}
       <div className="max-w-[1400px] mx-auto px-6 text-center mb-12">
