@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"d:\\\\modelo3d\\\\TIENDA3d\" -Recurse)",
+      "Bash(Select-Object FullName, Length, LastWriteTime)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd d:\\\\modelo3d\\\\TIENDA3d; npm run dev' -WindowStyle Normal)",
+      "PowerShell(Start-Sleep -Seconds 4; try { $r = Invoke-WebRequest -Uri \"http://localhost:3000\" -TimeoutSec 5 -UseBasicParsing; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $_\" })",
+      "PowerShell(Start-Sleep -Seconds 5; try { $r = Invoke-WebRequest -Uri \"http://localhost:3000\" -TimeoutSec 8 -UseBasicParsing; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $_\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://visorstl1.excavacionesart.workers.dev/\" -UseBasicParsing -TimeoutSec 10; \"Status: $\\($r.StatusCode\\) — Tamaño: $\\($r.Content.Length\\) bytes\" } catch { \"Error: $_\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://green-scene-9a72.excavacionesart.workers.dev/\" -UseBasicParsing -TimeoutSec 10; \"Status: $\\($r.StatusCode\\) — Tamaño: $\\($r.Content.Length\\) bytes\" } catch { \"Error: $_\" })",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\modelo3d\\\\TIENDA3d\" -Force | Where-Object { $_.Name -notin @\\('.claude','.github','dist','node_modules','src','public','.env.example','.gitignore','index.html','package-lock.json','package.json','README.md','tsconfig.json','vite.config.ts','dist.zip'\\) } | Select-Object Name)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://cenital.org/\" -UseBasicParsing -TimeoutSec 10; \"Status: $\\($r.StatusCode\\) — $\\($r.Content.Length\\) bytes\"; $r.Content | Select-String \"Roberto|visorstl|title\" | Select-Object -First 5 } catch { \"Error: $_\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://robertogarciasanz.github.io/visorstl/\" -UseBasicParsing -TimeoutSec 10; \"GitHub Pages: $\\($r.StatusCode\\) — $\\($r.Content.Length\\) bytes\"; $r.Content | Select-String \"Roberto|CNAME|title\" | Select-Object -First 5 } catch { \"Error: $_\" })",
+      "PowerShell(cd d:\\\\modelo3d\\\\TIENDA3d; \\(Get-Item \"public/videos/hero-bg.mp4\" -ErrorAction SilentlyContinue\\).Length / 1MB)",
+      "PowerShell(gh auth status 2>&1)",
+      "PowerShell(winget install --id GitHub.cli --silent --accept-package-agreements --accept-source-agreements 2>&1)"
+    ]
+  }
+}
