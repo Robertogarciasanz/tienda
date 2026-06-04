@@ -29,7 +29,8 @@ import {
   Cpu,
   ShieldCheck,
   Wrench,
-  Download
+  Download,
+  Wind
 } from 'lucide-react';
 
 // IndexedDB helpers for STL file persistence
@@ -607,6 +608,35 @@ export default function App() {
                   </a>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Generators / Tools */}
+          <div className="bg-surface border border-border rounded-none p-4">
+            <div className="flex items-center justify-between mb-3 border-b border-border/60 pb-2 flex-wrap gap-2">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-muted flex items-center gap-2 font-mono">
+                <span className="w-1.5 h-1.5 bg-[#7a5cff] rounded-full"></span> Herramientas STL
+              </h2>
+              <span className="text-[8px] font-mono text-muted uppercase bg-surface2 px-1.5 py-0.5 border border-border/40">TOOLS.GEN</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5">
+              <a
+                href={import.meta.env.BASE_URL + 'abanico_generador.html'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative text-left p-2.5 sm:p-3.5 rounded-none border border-border bg-surface hover:bg-surface2/50 hover:border-[#7a5cff] transition-all duration-200 flex flex-col justify-between h-20 sm:h-28 no-underline"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[8px] bg-surface2 text-muted px-1.5 py-0.5 rounded-none font-mono uppercase tracking-wider border border-border/40">Calado PETG</span>
+                    <ExternalLink className="w-3 h-3 text-muted group-hover:text-[#7a5cff] transition-colors" />
+                  </div>
+                  <h3 className="text-[10px] sm:text-xs font-bold text-text mt-1.5 group-hover:text-[#7a5cff] transition-colors uppercase font-mono line-clamp-1 flex items-center gap-1.5">
+                    <Wind className="w-3 h-3 shrink-0" /> Generador de Abanico
+                  </h3>
+                  <p className="text-[9px] text-muted line-clamp-1 sm:line-clamp-2 mt-0.5 font-mono leading-normal">Sube una foto, ajusta umbral y genera palas STL caladas en ZIP listas para imprimir.</p>
+                </div>
+              </a>
             </div>
           </div>
 
